@@ -18,11 +18,23 @@ def calculate(list):
         sum += (int(numbers[0]) * int(numbers[1]))
     print("sum is ", sum)
 
+def get_start_part(data):
+    parts = re.split("don't\(\)",data, 1)
+    return parts
+
+def get_remaining_parts(data):
+    parts = re.findall("do\(\).+?don't\(\)|do\(\).*",data)
+    return parts
+
 def main(file_name):
     data_list = get_file_data(file_name)
-    #print(data_list)
     combined_list = concat_list(data_list)
-    mul_list = regex_data(combined_list)
+    start_parts = get_start_part(combined_list)
+    remaining_parts = get_remaining_parts(start_parts[1])
+    remaining_parts.append(start_parts[0])
+    combined_parts_list = concat_list(remaining_parts)
+    
+    mul_list = regex_data(combined_parts_list)
     calculate(mul_list)
     
 main("input.txt")
